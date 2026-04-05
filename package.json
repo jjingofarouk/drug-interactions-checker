@@ -1,5 +1,5 @@
 {
-  "name": "drug-interaction-checker",
+  "name": "drug-interactions-checker",
   "version": "1.0.0",
   "description": "A lightweight standalone npm library for checking medical drug interactions",
   "main": "index.js",
@@ -20,7 +20,7 @@
     "medical",
     "medication"
   ],
-  "author": "",
+  "author": "Jingo Farouk <jjingofarouq@gmail.com>",
   "license": "ISC",
   "repository": {
     "type": "git",

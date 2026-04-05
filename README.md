@@ -1,21 +1,17 @@
-# drug-interaction-checker
+# drug-interactions-checker
 
 A lightweight standalone npm library for checking medical drug interactions. Uses a comprehensive JSON dataset of known interactions.
 
 ## Installation
 
-This is a local package. You can install it in another project by using its local path:
-
 ```bash
-npm install /path/to/drug-interaction-checker
+npm install drug-interactions-checker
 ```
-
-Or just import it if you're in the same repository.
 
 ## Usage
 
 ```javascript
-const { checkInteraction, getInteractions, getAllInteractions } = require('drug-interaction-checker');
+const { checkInteraction, getInteractions, getAllInteractions } = require('drug-interactions-checker');
 
 // 1. Check a specific interaction
 const interaction = checkInteraction('Acetaminophen', 'Warfarin');

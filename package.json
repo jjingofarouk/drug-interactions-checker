@@ -1,0 +1,33 @@
+{
+  "name": "drug-interaction-checker",
+  "version": "1.0.0",
+  "description": "A lightweight standalone npm library for checking medical drug interactions",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "data.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "drug",
+    "interaction",
+    "pharmacy",
+    "health",
+    "medical",
+    "medication"
+  ],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjingofarouk/drug-interactions-checker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jjingofarouk/drug-interactions-checker/issues"
+  },
+  "homepage": "https://github.com/jjingofarouk/drug-interactions-checker#readme"
+}

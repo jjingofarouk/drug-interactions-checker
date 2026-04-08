@@ -2,7 +2,7 @@
  * Health check endpoint
  * GET /api/health
  */
-export default function handler(req, res) {
+function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
@@ -19,3 +19,5 @@ export default function handler(req, res) {
     timestamp: new Date().toISOString()
   });
 }
+
+module.exports = handler;

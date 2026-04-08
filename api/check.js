@@ -4,7 +4,7 @@ const { checkInteraction } = require('../index.js');
  * Check drug interaction between two drugs
  * GET /api/check?drug1=Aspirin&drug2=Ibuprofen
  */
-export default function handler(req, res) {
+function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -54,3 +54,5 @@ export default function handler(req, res) {
     });
   }
 }
+
+module.exports = handler;

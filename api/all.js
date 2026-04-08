@@ -4,7 +4,7 @@ const { getAllInteractions } = require('../index.js');
  * Get all drug interactions
  * GET /api/all?limit=10&offset=0
  */
-export default function handler(req, res) {
+function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,3 +42,5 @@ export default function handler(req, res) {
     });
   }
 }
+
+module.exports = handler;

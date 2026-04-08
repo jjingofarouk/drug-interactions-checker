@@ -1,14 +1,16 @@
 # drug-interactions-checker
 
-A lightweight standalone npm library for checking medical drug interactions. Uses a comprehensive JSON dataset of known interactions.
+A lightweight standalone npm library and REST API for checking medical drug interactions. Uses a comprehensive JSON dataset of known interactions.
 
-## Installation
+**Now available as a REST API on RapidAPI!** 🎉
+
+## Installation (NPM Library)
 
 ```bash
 npm install drug-interactions-checker
 ```
 
-## Usage
+### Library Usage
 
 ```javascript
 const { checkInteraction, getInteractions, getAllInteractions } = require('drug-interactions-checker');
@@ -29,9 +31,28 @@ console.log(`Found ${aspirinInteractions.length} known interactions for Aspirin.
 const allData = getAllInteractions();
 ```
 
+## REST API (Vercel + RapidAPI)
+
+This project is also deployed as a REST API for easy integration into web and mobile applications.
+
+### Available Endpoints
+
+- **Check Interaction**: `GET /api/check?drug1=Aspirin&drug2=Ibuprofen`
+- **Get Drug Interactions**: `GET /api/interactions?drug=Aspirin`
+- **Get All Interactions**: `GET /api/all?limit=20&offset=0`
+- **Health Check**: `GET /api/health`
+
+### API Documentation
+
+For detailed API documentation, see [API.md](./API.md)
+
+### Deployment Instructions
+
+For instructions on deploying to Vercel and listing on RapidAPI, see [DEPLOYMENT.md](./DEPLOYMENT.md)
+
 ## Data Source
 
-The data is included as a JSON file bundled within the module (`data.json`) and queries are made directly against this imported module data. The dataset contains fields:
+The data is included as a JSON file (`data.json`) and queries are made directly against this dataset. The dataset contains fields:
 - `drug`: First referenced drug
 - `interacting_drug`: Second referenced drug
 - `description`: A short summary of the interaction

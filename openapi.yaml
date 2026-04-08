@@ -1,0 +1,264 @@
+openapi: 3.0.0
+info:
+  title: Drug Interaction Checker API
+  description: A comprehensive API for checking drug interactions. Query our database to identify potential interactions between medications.
+  version: 1.0.0
+  contact:
+    name: Jingo Farouk
+    email: jjingofarouq@gmail.com
+  license:
+    name: ISC
+
+servers:
+  - url: https://drug-interaction-checker-{your-deployment}.vercel.app
+    description: Production environment (update with your Vercel domain)
+  - url: http://localhost:3000
+    description: Local development
+
+tags:
+  - name: Drug Interactions
+    description: Endpoints for checking drug interactions
+  - name: System
+    description: System health and meta endpoints
+
+paths:
+  /api/check:
+    get:
+      tags:
+        - Drug Interactions
+      summary: Check interaction between two drugs
+      description: Retrieves information about whether two drugs interact with each other
+      parameters:
+        - name: drug1
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "Aspirin"
+          description: First drug name
+        - name: drug2
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "Ibuprofen"
+          description: Second drug name
+      responses:
+        '200':
+          description: Successful response with interaction data
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/InteractionFound'
+                  - $ref: '#/components/schemas/NoInteraction'
+        '400':
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/interactions:
+    get:
+      tags:
+        - Drug Interactions
+      summary: Get all interactions for a drug
+      description: Retrieves all known interactions for a specific drug
+      parameters:
+        - name: drug
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "Aspirin"
+          description: Drug name to search for
+      responses:
+        '200':
+          description: Successful response with list of interactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteractionsList'
+        '400':
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/all:
+    get:
+      tags:
+        - Drug Interactions
+      summary: Get all interactions (paginated)
+      description: Retrieves all drug interactions in the database with pagination support
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+          description: Number of results to return per page
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          description: Number of results to skip
+      responses:
+        '200':
+          description: Successful response with paginated interactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInteractions'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/health:
+    get:
+      tags:
+        - System
+      summary: Health check
+      description: Returns the health status of the API
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheck'
+
+components:
+  schemas:
+    Interaction:
+      type: object
+      properties:
+        drug:
+          type: string
+          example: "Aspirin"
+        interacting_drug:
+          type: string
+          example: "Ibuprofen"
+        description:
+          type: string
+          example: "Concurrent use of Aspirin and Ibuprofen may increase gastrointestinal bleeding risk"
+        extended_description:
+          type: string
+          example: "Ibuprofen can antagonize the irreversible antiplatelet effect of Aspirin..."
+
+    InteractionFound:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        hasInteraction:
+          type: boolean
+          example: true
+        interaction:
+          $ref: '#/components/schemas/Interaction'
+
+    NoInteraction:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        hasInteraction:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "No interaction found between these drugs"
+        drugs:
+          type: array
+          items:
+            type: string
+
+    InteractionsList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        drug:
+          type: string
+          example: "Aspirin"
+        count:
+          type: integer
+          example: 2
+        interactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interaction'
+
+    PaginatedInteractions:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        total:
+          type: integer
+          example: 42
+        limit:
+          type: integer
+          example: 20
+        offset:
+          type: integer
+          example: 0
+        count:
+          type: integer
+          example: 20
+        interactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interaction'
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing parameters"
+        message:
+          type: string
+          example: "Both drug1 and drug2 query parameters are required"
+
+    HealthCheck:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        status:
+          type: string
+          example: "API is running"
+        version:
+          type: string
+          example: "1.0.0"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-04-09T00:00:00Z"

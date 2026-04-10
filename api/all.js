@@ -1,10 +1,12 @@
 const { getAllInteractions } = require('../index.js');
+const analytics = require('./middleware/analytics');
 
 /**
  * Get all drug interactions
  * GET /api/all?limit=10&offset=0
  */
 function handler(req, res) {
+  const startTime = Date.now();
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,6 +19,8 @@ function handler(req, res) {
   }
 
   if (req.method !== 'GET') {
+    const responseTime = Date.now() - startTime;
+    analytics.trackRequest(req, 'all', 405, responseTime);
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -26,6 +30,8 @@ function handler(req, res) {
 
     const allInteractions = getAllInteractions();
     const paginatedInteractions = allInteractions.slice(offset, offset + limit);
+    const responseTime = Date.now() - startTime;
+    analytics.trackRequest(req, 'all', 200, responseTime);
 
     return res.status(200).json({
       success: true,
@@ -36,6 +42,8 @@ function handler(req, res) {
       interactions: paginatedInteractions
     });
   } catch (error) {
+    const responseTime = Date.now() - startTime;
+    analytics.trackRequest(req, 'all', 500, responseTime);
     return res.status(500).json({
       error: 'Internal server error',
       message: error.message
